@@ -1,0 +1,47 @@
+<project name="Lyricer" default="release" basedir=".">
+    <description>
+        Simple Build-File-Example
+    </description>
+    <property name="src" location="src/"/>
+    <property name="build" location="build/"/>
+    <property name="release" location="release/"/>
+    <property name="release-test" location="${release}/test/"/>
+    <property name="mainClass" value="de.larsjunker.Lyricer.Lyricer"/>
+
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${build}">
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <target name="build-test-release" depends="compile">
+        <mkdir dir="${release-test}"/>
+        <buildnumber/>
+        <jar jarfile="${release-test}/${ant.project.name}-${build.number}.jar" basedir="${build}">
+            <manifest>
+                <attribute name="Built-By" value="Lars Junker"/>
+                <attribute name="Main-Class" value="${mainClass}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="release" depends="compile">
+        <mkdir dir="${release}"/>
+        <jar jarfile="${release}/${ant.project.name}.jar" basedir="${build}">
+            <manifest>
+                <attribute name="Built-By" value="Lars Junker"/>
+                <attribute name="Main-Class" value="${mainClass}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${release-test}"/>
+    </target>
+</project>
